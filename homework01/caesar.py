@@ -1,5 +1,6 @@
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     import string
+
     alphabet_lower = string.ascii_lowercase
     alphabet_upper = string.ascii_uppercase
     shifted_alphabet_lower = alphabet_lower[shift:] + alphabet_lower[:shift]
@@ -10,11 +11,15 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
 
     table = str.maketrans(alphabet, shifted_alphabet)
     return plaintext.translate(table)
-a = encrypt_caesar("Python")
+
+
+a = encrypt_caesar("Python", 0)
 print(a)
+
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     import string
+
     shift = 26 - shift
     alphabet_lower = string.ascii_lowercase
     alphabet_upper = string.ascii_uppercase
@@ -26,4 +31,6 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
 
     table = str.maketrans(alphabet, shifted_alphabet)
     return ciphertext.translate(table)
+
+
 print(decrypt_caesar(a))
