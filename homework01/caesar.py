@@ -1,36 +1,55 @@
+import typing as tp
+
+
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
-    import string
-
-    alphabet_lower = string.ascii_lowercase
-    alphabet_upper = string.ascii_uppercase
-    shifted_alphabet_lower = alphabet_lower[shift:] + alphabet_lower[:shift]
-    shifted_alphabet_upper = alphabet_upper[shift:] + alphabet_upper[:shift]
-
-    alphabet = alphabet_lower + alphabet_upper
-    shifted_alphabet = shifted_alphabet_lower + shifted_alphabet_upper
-
-    table = str.maketrans(alphabet, shifted_alphabet)
-    return plaintext.translate(table)
-
-
-a = encrypt_caesar("Python", 0)
-print(a)
+    """
+    Encrypts plaintext using a Caesar cipher.
+    >>> encrypt_caesar("PYTHON")
+    'SBWKRQ'
+    >>> encrypt_caesar("python")
+    'sbwkrq'
+    >>> encrypt_caesar("Python3.6")
+    'Sbwkrq3.6'
+    >>> encrypt_caesar("")
+    ''
+    """
+    ciphertext = ""
+    for i in plaintext:
+        if i == " ":
+            ciphertext = ciphertext + i
+        elif i.isdigit():
+            ciphertext = ciphertext + i
+        elif i.isupper():
+            ciphertext = ciphertext + chr((ord(i) + shift - 65) % 26 + 65)
+        elif i.islower():
+            ciphertext = ciphertext + chr((ord(i) + shift - 97) % 26 + 97)
+        else:
+            ciphertext = ciphertext + i
+    return ciphertext
 
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
-    import string
-
-    shift = 26 - shift
-    alphabet_lower = string.ascii_lowercase
-    alphabet_upper = string.ascii_uppercase
-    shifted_alphabet_lower = alphabet_lower[shift:] + alphabet_lower[:shift]
-    shifted_alphabet_upper = alphabet_upper[shift:] + alphabet_upper[:shift]
-
-    alphabet = alphabet_lower + alphabet_upper
-    shifted_alphabet = shifted_alphabet_lower + shifted_alphabet_upper
-
-    table = str.maketrans(alphabet, shifted_alphabet)
-    return ciphertext.translate(table)
-
-
-print(decrypt_caesar(a))
+    """
+    Decrypts a ciphertext using a Caesar cipher.
+    >>> decrypt_caesar("SBWKRQ")
+    'PYTHON'
+    >>> decrypt_caesar("sbwkrq")
+    'python'
+    >>> decrypt_caesar("Sbwkrq3.6")
+    'Python3.6'
+    >>> decrypt_caesar("")
+    ''
+    """
+    plaintext = ""
+    for i in ciphertext:
+        if i == " ":
+            plaintext = plaintext + i
+        elif i.isdigit():
+            plaintext = plaintext + i
+        elif i.isupper():
+            plaintext = plaintext + chr((ord(i) - shift - 65) % 26 + 65)
+        elif i.islower():
+            plaintext = plaintext + chr((ord(i) - shift - 97) % 26 + 97)
+        else:
+            plaintext += i
+    return plaintext
