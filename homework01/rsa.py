@@ -1,3 +1,4 @@
+import math
 import random
 import typing as tp
 
@@ -5,7 +6,6 @@ import typing as tp
 def is_prime(n: int) -> bool:
     """
     Tests to see if a number is prime.
-
     >>> is_prime(2)
     True
     >>> is_prime(11)
@@ -13,20 +13,42 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    # PUT YOUR CODE HERE
+    if n == 2:
+        return True
+    if n % 2 == 0 or n <= 1:
+        return False
+    sqr = int(math.sqrt(n)) + 1
+
+    for divisor in range(3, sqr, 2):
+        if n % divisor ==0:
+            return False
+    return True
     pass
 
 
 def gcd(a: int, b: int) -> int:
     """
     Euclid's algorithm for determining the greatest common divisor.
-
     >>> gcd(12, 15)
     3
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
+    # Everything divides 0
+    if (a == 0):
+        return b
+
+    if (b == 0):
+        return a
+
+    # base case
+    if (a == b):
+        return a
+
+    # a is greater
+    if (a > b):
+        return gcd(a - b, b)
+    return gcd(a, b - a)
     pass
 
 
@@ -34,11 +56,16 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
     inverse of two numbers.
-
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
+    for i in range(0, phi):
+        # If we have our multiplicative inverse then return it
+        if (e*i) % phi == 1:
+            return i
+    # If we didn't find the multiplicative inverse in the loop above
+    # then it doesn't exist for A under M
+    return -1
     pass
 
 
@@ -49,9 +76,8 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
         raise ValueError("p and q cannot be equal")
 
     # n = pq
-    # PUT YOUR CODE HERE
-
-    # phi = (p-1)(q-1)
+    n = p * q
+    phi = (p-1)*(q-1)
     # PUT YOUR CODE HERE
 
     # Choose an integer e such that e and phi(n) are coprime
