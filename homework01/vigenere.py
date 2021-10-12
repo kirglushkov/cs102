@@ -11,10 +11,14 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     if plaintext.islower():
         import string
+
         alphabet1 = string.ascii_lowercase
         l_to_index = dict(zip(alphabet1, range(len(alphabet1))))
         index_for_l = dict(zip(range(len(alphabet1)), alphabet1))
-        split_word = [plaintext[i:i + len(keyword)] for i in range(0, len(plaintext), len(keyword))]
+        split_word = [
+            plaintext[i : i + len(keyword)]
+            for i in range(0, len(plaintext), len(keyword))
+        ]
         for each in split_word:
             i = 0
             for letter in each:
@@ -23,10 +27,14 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
                 i = i + 1
     else:
         import string
+
         alphabet2 = string.ascii_uppercase
         l_to_index = dict(zip(alphabet2, range(len(alphabet2))))
         index_for_l = dict(zip(range(len(alphabet2)), alphabet2))
-        split_word = [plaintext[i:i + len(keyword)] for i in range(0, len(plaintext), len(keyword))]
+        split_word = [
+            plaintext[i : i + len(keyword)]
+            for i in range(0, len(plaintext), len(keyword))
+        ]
         for each in split_word:
             i = 0
             for letter in each:
@@ -49,10 +57,14 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     if ciphertext.islower():
         import string
+
         alphabet1 = string.ascii_lowercase
         l_to_index = dict(zip(alphabet1, range(len(alphabet1))))
         index_for_l = dict(zip(range(len(alphabet1)), alphabet1))
-        split_ciphertext = [ciphertext[i:i + len(keyword)] for i in range(0, len(ciphertext), len(keyword))]
+        split_ciphertext = [
+            ciphertext[i : i + len(keyword)]
+            for i in range(0, len(ciphertext), len(keyword))
+        ]
         for each in split_ciphertext:
             i = 0
             for letter in each:
@@ -61,10 +73,14 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
                 i = i + 1
     else:
         import string
+
         alphabet2 = string.ascii_uppercase
         l_to_index = dict(zip(alphabet2, range(len(alphabet2))))
         index_for_l = dict(zip(range(len(alphabet2)), alphabet2))
-        split_ciphertext = [ciphertext[i:i + len(keyword)] for i in range(0, len(ciphertext), len(keyword))]
+        split_ciphertext = [
+            ciphertext[i : i + len(keyword)]
+            for i in range(0, len(ciphertext), len(keyword))
+        ]
         for each in split_ciphertext:
             i = 0
             for letter in each:
@@ -73,5 +89,3 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
                 i = i + 1
 
     return plaintext
-
-
