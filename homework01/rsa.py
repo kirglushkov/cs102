@@ -52,7 +52,7 @@ def gcd(a: int, b: int) -> int:
     pass
 
 
-def multiplicative_inverse(e: int, phi: int) -> int:
+def multiplicative_inverse(e: int, phi: i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nt) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
     inverse of two numbers.
@@ -69,9 +69,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     pass
 
 
-def generate_keypair(
-    p: int, q: int
-) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
+def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
         raise ValueError("Both numbers must be prime.")
     elif p == q:
