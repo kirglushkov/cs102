@@ -20,7 +20,7 @@ def is_prime(n: int) -> bool:
     sqr = int(math.sqrt(n)) + 1
 
     for divisor in range(3, sqr, 2):
-        if n % divisor ==0:
+        if n % divisor == 0:
             return False
     return True
 
@@ -34,18 +34,18 @@ def gcd(a: int, b: int) -> int:
     1
     """
     # Everything divides 0
-    if (a == 0):
+    if a == 0:
         return b
 
-    if (b == 0):
+    if b == 0:
         return a
 
     # base case
-    if (a == b):
+    if a == b:
         return a
 
     # a is greater
-    if (a > b):
+    if a > b:
         return gcd(a - b, b)
     return gcd(a, b - a)
 
@@ -74,7 +74,9 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     return y % aphi
 
 
-def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
+def generate_keypair(
+    p: int, q: int
+) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
         raise ValueError("Both numbers must be prime.")
     elif p == q:
@@ -82,7 +84,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
     # n = pq
     n = p * q
-    phi = (p-1)*(q-1)
+    phi = (p - 1) * (q - 1)
     # PUT YOUR CODE HERE
 
     # Choose an integer e such that e and phi(n) are coprime
