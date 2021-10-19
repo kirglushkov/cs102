@@ -8,7 +8,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
     'LXFOPVEFRNHR'
     """
-    ciphertext = []
+    ciphertext = ""
     import string
 
     alphabet1 = string.ascii_uppercase
@@ -41,7 +41,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
-    plaintext = []
+    plaintext = ""
     import string
 
     alphabet1 = string.ascii_uppercase
