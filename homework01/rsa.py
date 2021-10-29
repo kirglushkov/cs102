@@ -57,21 +57,21 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    spis: list = []
-    aphi = phi
-    spis.insert(0, phi // e)
+    spisok: list = []
+    phi_2 = phi
+    spisok.insert(0, phi // e)
     while phi % e != 0:
         c = phi % e
         phi = e
         e = c
-        spis.insert(0, phi // e)
+        spisok.insert(0, phi // e)
     x = 0
     y = 1
-    for i in range(1, len(spis)):
+    for i in range(1, len(spisok)):
         x1 = y
-        y = x - x1 * spis[i]
+        y = x - x1 * spisok[i]
         x = x1
-    return y % aphi
+    return y % phi_2
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -83,7 +83,6 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     # n = pq
     n = p * q
     phi = (p - 1) * (q - 1)
-    # PUT YOUR CODE HERE
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
