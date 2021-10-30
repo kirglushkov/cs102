@@ -11,11 +11,11 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     i = 0
     for each in plaintext:
-        if each in [c for c in (chr(i) for i in range(65, 91))]:
+        if each in list((chr(i) for i in range(65, 91))):
             offset = ord(keyword[i]) - ord("A")
             encrypted = chr((ord(each) - ord("A") + offset) % 26 + ord("A"))
             ciphertext += encrypted
-        elif each in [c for c in (chr(i) for i in range(96, 123))]:
+        elif each in list((chr(i) for i in range(96, 123))):
             offset = ord(keyword[i]) - ord("a")
             encrypted = chr((ord(each) - ord("a") + offset) % 26 + ord("a"))
             ciphertext += encrypted
@@ -38,12 +38,12 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     j = 0
     for each in ciphertext:
-        if each in [c for c in (chr(i) for i in range(65, 91))]:
+        if each in list((chr(i) for i in range(65, 91))):
             offset = ord(keyword[j]) - ord("A")
             decrypted_offset = 26 - offset
             decrypted = chr((ord(each) - ord("A") + decrypted_offset) % 26 + ord("A"))
             plaintext += decrypted
-        elif each in [c for c in (chr(i) for i in range(96, 123))]:
+        elif each in list((chr(i) for i in range(96, 123))):
             offset = ord(keyword[j]) - ord("a")
             decrypted_offset = 26 - offset
             decrypted = chr((ord(each) - ord("a") + decrypted_offset) % 26 + ord("a"))
