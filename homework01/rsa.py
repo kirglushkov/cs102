@@ -33,7 +33,6 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # Everything divides 0
     while b:
         a, b = b, a % b
     return a
