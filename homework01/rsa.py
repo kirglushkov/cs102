@@ -62,8 +62,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     spisok.insert(0, phi // e)
     while phi % e != 0:
         c = phi % e
-        phi = e
-        e = c
+        phi, e = e, c
         spisok.insert(0, phi // e)
     x = 0
     y = 1
@@ -104,7 +103,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
     # Unpack the key into it's components
     key, n = pk
-    # Convert each letter in the plaintext to numbers based on
+    # Convert each letter in the plaintext to numbers based on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
     # the character using a^b mod m
     cipher = [(ord(char) ** key) % n for char in plaintext]
     # Return the array of bytes
