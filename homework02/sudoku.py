@@ -34,6 +34,8 @@ def display(grid: tp.List[tp.List[str]]) -> None:
 
 
 def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
+    return [values[x: n+x] for x in range(0, len(values), n)]
+    
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
 
@@ -42,7 +44,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    pass
+    
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
