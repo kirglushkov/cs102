@@ -34,7 +34,7 @@ def display(grid: tp.List[tp.List[str]]) -> None:
 
 
 def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
-    return [values[x: n+x] for x in range(0, len(values), n)]
+    return [values[x: n + x] for x in range(0, len(values), n)]
 
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
@@ -50,8 +50,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     a = pos[0]
     b = pos[1]
-    row = [x for x in grid[a]]
-    return row
+    return [x for x in grid[a]]
 
     """Возвращает все значения для номера строки, указанной в pos
 
@@ -83,7 +82,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     a = pos[0] - pos[0] % 3
     b = pos[1] - pos[1] % 3
-    return [grid[i][j] for i in range(a, a+3) for j in range(b, b+3)]
+    return [grid[i][j] for i in range(a, a + 3) for j in range(b, b + 3)]
 
     """Возвращает все значения из квадрата, в который попадает позиция pos
 
@@ -99,6 +98,14 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
 
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
+    list_empty_pos = []
+    for a in range(len(grid[0])):
+        for b in range(len(grid[0])):
+            if grid[a][b] == ".":
+                list_empty_pos.append(a)
+                list_empty_pos.append(b)
+    return tuple(list_empty_pos)
+
     """Найти первую свободную позицию в пазле
 
     >>> find_empty_positions([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']])
@@ -108,10 +115,28 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    pass
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
+    find_in_row = get_row(grid, pos)
+    find_in_col = get_col(grid, pos)
+    find_in_block = get_block(grid, pos)
+    a = [(x,y,z) for x in find_in_row for y in find_in_col for z in find_in_block]
+    possibilities = ["1","2","3","4","5","6","7","8","9"]
+    fin_pos = []
+    for each in a:
+        for i in each:
+            for hcae in possibilities:
+                if i == hcae:
+                    fin_pos.append(hcae)
+    
+    find_possible = list(set(possibilities).difference(fin_pos))
+    return set(find_possible)
+
+
+
+
+
     """Вернуть множество возможных значения для указанной позиции
 
     >>> grid = read_sudoku('puzzle1.txt')
@@ -122,10 +147,20 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
+    find_in_row = get_row(grid, pos)
+    find_in_col = get_col(grid, pos)
+    find_in_block = get_block(grid, pos)
+
+    find_empty_positions(find_in_row)
+    find_empty_positions(find_in_col)
+    find_empty_positions(find_in_block)
+    
+
+
     """ Решение пазла, заданного в grid """
     """ Как решать Судоку?
         1. Найти свободную позицию
