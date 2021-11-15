@@ -208,10 +208,23 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
         return True
 
 
-
-
-
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
+    import random
+
+    grid = [["." for j in range(9)] for i in range(9)]
+    grid = solve(grid)
+
+    grid_num = [[i, j] for i in range(9) for j in range(9)]
+    random.shuffle(grid_num)
+
+    deletions = 81 - N
+    if deletions <= 0:
+        return grid
+    else:
+        for i in range(deletions):
+            grid[grid_num[i][0]][grid_num[i][1]] = "."
+        return grid
+
     """Генерация судоку заполненного на N элементов
 
     >>> grid = generate_sudoku(40)
@@ -233,7 +246,6 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
 
 
 if __name__ == "__main__":
