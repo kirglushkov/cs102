@@ -19,7 +19,7 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """ Вывод Судоку """
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
@@ -104,7 +104,11 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
             if grid[a][b] == ".":
                 list_empty_pos.append(a)
                 list_empty_pos.append(b)
-    return tuple(list_empty_pos)
+    if list_empty_pos:
+        return tuple(list_empty_pos)
+    else:
+        return None
+    
 
     """Найти первую свободную позицию в пазле
 
@@ -133,10 +137,6 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     find_possible = list(set(possibilities).difference(fin_pos))
     return set(find_possible)
 
-
-
-
-
     """Вернуть множество возможных значения для указанной позиции
 
     >>> grid = read_sudoku('puzzle1.txt')
@@ -151,14 +151,20 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    find_in_row = get_row(grid, pos)
-    find_in_col = get_col(grid, pos)
-    find_in_block = get_block(grid, pos)
+    if find_empty_positions(grid) is None:
+        return grid
+    for i in find_possible_values(grid, find_empty_positions(grid)):
+        pos = find_empty_positions(grid)
+        a = pos[0]
+        b = pos[1]
+        grid[a][b] = i
+        if solve(grid):
+            return grid
+        grid[a][b] = "."
+    return None
 
-    find_empty_positions(find_in_row)
-    find_empty_positions(find_in_col)
-    find_empty_positions(find_in_block)
-    
+
+
 
 
     """ Решение пазла, заданного в grid """
@@ -173,7 +179,6 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    pass
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
