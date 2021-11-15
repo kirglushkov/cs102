@@ -25,7 +25,8 @@ def display(grid: tp.List[tp.List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
+                for col in range(9)
             )
         )
         if str(row) in "25":
@@ -34,7 +35,7 @@ def display(grid: tp.List[tp.List[str]]) -> None:
 
 
 def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
-    return [values[x: n + x] for x in range(0, len(values), n)]
+    return [values[x : n + x] for x in range(0, len(values), n)]
 
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
@@ -44,7 +45,6 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -108,7 +108,6 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
         return tuple(list_empty_pos)
     else:
         return None
-    
 
     """Найти первую свободную позицию в пазле
 
@@ -125,15 +124,15 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     find_in_row = get_row(grid, pos)
     find_in_col = get_col(grid, pos)
     find_in_block = get_block(grid, pos)
-    a = [(x,y,z) for x in find_in_row for y in find_in_col for z in find_in_block]
-    possibilities = ["1","2","3","4","5","6","7","8","9"]
+    a = [(x, y, z) for x in find_in_row for y in find_in_col for z in find_in_block]
+    possibilities = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     fin_pos = []
     for each in a:
         for i in each:
             for hcae in possibilities:
                 if i == hcae:
                     fin_pos.append(hcae)
-    
+
     find_possible = list(set(possibilities).difference(fin_pos))
     return set(find_possible)
 
@@ -147,7 +146,6 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
@@ -162,10 +160,6 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             return grid
         grid[a][b] = "."
     return None
-
-
-
-
 
     """ Решение пазла, заданного в grid """
     """ Как решать Судоку?
@@ -182,9 +176,39 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
-    # TODO: Add doctests with bad puzzles
-    pass
+    true_list = []
+    for i in range(0, 9):
+        for j in range(0, 9):
+            summa1 = []
+            summa2 = []
+            summa3 = []
+            pos = (i, j)
+            row = set(get_row(solution, pos))
+            col = set(get_col(solution, pos))
+            block = set(get_block(solution, pos))
+            for each in row:
+                if each.isdigit():
+                    summa1.append(int(each))
+            a = sum(summa1)
+            for each in col:
+                if each.isdigit():
+                    summa2.append(int(each))
+            b = sum(summa2)
+            for each in block:
+                if each.isdigit():
+                    summa3.append(int(each))
+            c = sum(summa3)
+            if a != b and b != c:
+                true_list.append(1)
+            else:
+                None
+    if true_list:
+        return False
+    else:
+        return True
+
+
+
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
