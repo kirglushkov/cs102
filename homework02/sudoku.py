@@ -48,7 +48,6 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     a = pos[0]
-    b = pos[1]
     return [x for x in grid[a]]
 
     """Возвращает все значения для номера строки, указанной в pos
@@ -63,7 +62,6 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
 
 
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
-    a = pos[0]
     b = pos[1]
     return [x[b] for x in grid]
 
@@ -210,18 +208,18 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
 def generate_sudoku(N: int):
     import random
 
-    grid = [["." for j in range(9)] for i in range(9)]
-    grid = solve(grid)
+    grid_dot = [["." for j in range(9)] for i in range(9)]
+    grid = solve(grid_dot)
 
-    grid_num = [[i, j] for i in range(9) for j in range(9)]
-    random.shuffle(grid_num)
+    sud_grid = [[i, j] for i in range(9) for j in range(9)]
+    random.shuffle(sud_grid)
 
     deletions = 81 - N
     if deletions <= 0:
         return grid
     else:
         for i in range(deletions):
-            grid[grid_num[i][0]][grid_num[i][1]] = "."
+            grid[sud_grid[i][0]][sud_grid[i][1]] = "."
         return grid
 
     """Генерация судоку заполненного на N элементов
