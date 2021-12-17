@@ -13,10 +13,12 @@ def remove_wall(
     grid: List[List[Union[str, int]]], coord: Tuple[int, int]
 ) -> List[List[Union[str, int]]]:
     """
+
     :param grid:
     :param coord:
     :return:
     """
+
     x, y = coord
     way = randint(1, 2)  # 1 for right, 2 for up
     if y < len(grid[0]) - 3 and y % 2 != 0 and (x == 1 or way == 1):
@@ -24,6 +26,10 @@ def remove_wall(
     elif (y == len(grid[0]) - 2 or way == 2) and x > 2 and x % 2 != 0:
         grid[x - 1][y] = " "
     return grid
+
+
+    pass
+
 
 
 def bin_tree_maze(
@@ -52,8 +58,10 @@ def bin_tree_maze(
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
 
+
     for i, j in enumerate(empty_cells):
         grid = remove_wall(grid, j)
+
 
     # генерация входа и выхода
     if random_exit:
@@ -70,13 +78,13 @@ def bin_tree_maze(
 
 
 
-
 def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     """
 
     :param grid:
     :return:
     """
+
     exits = []
     R, C = len(grid), len(grid[0])
     for i in range(R):
@@ -84,6 +92,9 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
             if "X" == grid[i][j]:
                 exits.append((i, j))
     return exits
+
+
+    pass
 
 
 
@@ -94,6 +105,11 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :param k:
     :return:
     """
+
+    pass
+
+
+
     pass
 
 
@@ -157,4 +173,8 @@ if __name__ == "__main__":
     print(pd.DataFrame(GRID))
     _, PATH = solve_maze(GRID)
     MAZE = add_path_to_grid(GRID, PATH)
+
     print(pd.DataFrame(MAZE))
+
+    print(pd.DataFrame(MAZE))
+
