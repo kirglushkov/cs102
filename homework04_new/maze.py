@@ -17,12 +17,20 @@ def remove_wall(
     :param coord:
     :return:
     """
-    x, y = coord
+    y, x = coord
     way = randint(1, 2)  # 1 for right, 2 for up
-    if y < len(grid[0]) - 3 and y % 2 != 0 and (x == 1 or way == 1):
-        grid[x][y + 1] = " "
-    elif (y == len(grid[0]) - 2 or way == 2) and x > 2 and x % 2 != 0:
-        grid[x - 1][y] = " "
+    if way != 1:
+        if x != len(grid[0]) - 2:
+            grid[y][x + 1] = " "
+        else:
+            if y != 1:
+                grid[y - 1][x] = " "
+    else:
+        if y != 1:
+            grid[y - 1][x] = " "
+        else:
+            if x != len(grid[0]) - 2:
+                grid[y][x + 1] = " "
     return grid
 
 
