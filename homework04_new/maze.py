@@ -26,9 +26,7 @@ def remove_wall(
     return grid
 
 
-def bin_tree_maze(
-    rows: int = 15, cols: int = 15, random_exit: bool = True
-):
+def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True):
     """
     :param rows:
     :param cols:
