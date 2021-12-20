@@ -1,7 +1,6 @@
-from copy import deepcopy
 from random import choice, randint
 from typing import List, Optional, Tuple, Union
-
+from copy import deepcopy
 import pandas as pd
 
 
@@ -30,7 +29,6 @@ def bin_tree_maze(
     rows: int = 15, cols: int = 15, random_exit: bool = True
 ) -> List[List[Union[str, int]]]:
     """
-
     :param rows:
     :param cols:
     :param random_exit:
@@ -51,11 +49,9 @@ def bin_tree_maze(
     # выбрать второе возможное направление
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
-
     for i, j in enumerate(empty_cells):
         grid = remove_wall(grid, j)
 
-    # генерация входа и выхода
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
@@ -67,8 +63,6 @@ def bin_tree_maze(
     grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
 
     return grid
-
-
 
 
 def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
@@ -103,7 +97,6 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
                         continue
                     grid[i + x][j + y] = k + 1
     return grid
-
 
 
 def shortest_path(
@@ -212,13 +205,15 @@ def add_path_to_grid(
     grid: List[List[Union[str, int]]], path: Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]
 ) -> List[List[Union[str, int]]]:
     """
-
     :param grid:
     :param path:
     :return:
     """
-
     if path:
+        for x, row in enumerate(grid):
+            for y, _ in enumerate(row):
+                if grid[x][y] != "■":
+                    grid[x][y] = " "
         for i, row in enumerate(grid):
             for j, _ in enumerate(row):
                 if (i, j) in path:
@@ -233,3 +228,4 @@ if __name__ == "__main__":
     _, PATH = solve_maze(GRID)
     MAZE = add_path_to_grid(GRID, PATH)
     print(pd.DataFrame(MAZE))
+    
