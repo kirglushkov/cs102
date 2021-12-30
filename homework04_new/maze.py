@@ -56,7 +56,7 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True):
     # выбрать второе возможное направление
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
-    for i, j in enumerate(empty_cells):
+    for _, j in enumerate(empty_cells):
         grid = remove_wall(grid, j)
 
     if random_exit:
@@ -78,13 +78,8 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :param grid:
     :return:
     """
-    exits = []
     R, C = len(grid), len(grid[0])
-    for i in range(R):
-        for j in range(C):
-            if "X" == grid[i][j]:
-                exits.append((i, j))
-    return exits
+    return [(i, j) for i in range(R) for j in range(C) if "X" == grid[i][j]]
 
 
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
@@ -95,25 +90,17 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :return:
     """
     R, C = len(grid), len(grid[0])
-    ways = [
-        [0, 1],
-        [0, -1],
-        [1, 0],
-        [-1, 0],
-    ]  # which means: 1 right, 2 left, 3 down, 4 up
-    for i in range(R):
-        for j in range(C):
-            if grid[i][j] == k:
-                for x, y in ways:
-                    if (
-                        (0 > i + x or i + x >= R)
-                        or 0 > j + y
-                        or 0 >= C
-                        or C <= j + y
-                        or grid[i + x][j + y] != 0
-                    ):
-                        continue
-                    grid[i + x][j + y] = k + 1
+    for x, row in enumerate(grid):
+        for y, _ in enumerate(row):
+            if grid[x][y] == k:
+                if x > 0 and grid[x - 1][y] == 0:
+                    grid[x - 1][y] = k + 1
+                if x < R - 1 and grid[x + 1][y] == 0:
+                    grid[x + 1][y] = k + 1
+                if y > 0 and grid[x][y - 1] == 0:
+                    grid[x][y - 1] = k + 1
+                if y < C - 1 and grid[x][y + 1] == 0:
+                    grid[x][y + 1] = k + 1
     return grid
 
 
