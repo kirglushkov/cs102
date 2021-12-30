@@ -1,29 +1,37 @@
 import pathlib
 import typing as tp
+
 T = tp.TypeVar("T")
+
+
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
     """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
     return create_grid(puzzle)
+
+
 def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
     digits = [c for c in puzzle if c in "123456789."]
     grid = group(digits, 9)
     return grid
+
+
 def display(grid: tp.List[tp.List[str]]) -> None:
     """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
         print(
-            "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+            "".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
             )
         )
         if str(row) in "25":
             print(line)
     print()
+
+
 def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     return [values[x : n + x] for x in range(0, len(values), n)]
     """
@@ -33,6 +41,8 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
+
+
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     return [x for x in grid[pos[0]]]
     """Возвращает все значения для номера строки, указанной в pos
@@ -43,6 +53,8 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
+
+
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     return [x[pos[1]] for x in grid]
     """Возвращает все значения для номера столбца, указанного в pos
@@ -53,6 +65,8 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
+
+
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     a = pos[0] - pos[0] % 3
     b = pos[1] - pos[1] % 3
@@ -67,6 +81,8 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
     pass
+
+
 def find_empty_positions(grid: tp.List[tp.List[str]]):
     list_empty_pos = []
     for a in range(len(grid[0])):
@@ -86,6 +102,8 @@ def find_empty_positions(grid: tp.List[tp.List[str]]):
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
+
+
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
     possibilities = set()
     find_in_row = get_row(grid, pos)
@@ -105,6 +123,8 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
+
+
 def solve(grid: tp.List[tp.List[str]]):
     if find_empty_positions(grid) is None:
         return grid
@@ -134,6 +154,9 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     true_list = []
     for i in range(0, 9):
         for j in range(0, 9):
+            summa1 = []
+            summa2 = []
+            summa3 = []
             pos = (i, j)
             row = set(get_row(solution, pos))
             col = set(get_col(solution, pos))
@@ -159,10 +182,8 @@ def generate_sudoku(N: int):
 
     grid_dot = [["." for j in range(9)] for i in range(9)]
     grid = solve(grid_dot)
-
     sud_grid = [[i, j] for i in range(9) for j in range(9)]
     random.shuffle(sud_grid)
-
     deletions = 81 - N
     if deletions <= 0:
         return grid
@@ -170,9 +191,7 @@ def generate_sudoku(N: int):
         for i in range(deletions):
             grid[sud_grid[i][0]][sud_grid[i][1]] = "."
         return grid
-
     """Генерация судоку заполненного на N элементов
-
     >>> grid = generate_sudoku(40)
     >>> sum(1 for row in grid for e in row if e == '.')
     41
