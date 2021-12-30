@@ -92,15 +92,16 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     R, C = len(grid), len(grid[0])
     for x, row in enumerate(grid):
         for y, _ in enumerate(row):
-            if grid[x][y] == k:
-                if x > 0 and grid[x - 1][y] == 0:
-                    grid[x - 1][y] = k + 1
-                if x < R - 1 and grid[x + 1][y] == 0:
-                    grid[x + 1][y] = k + 1
-                if y > 0 and grid[x][y - 1] == 0:
-                    grid[x][y - 1] = k + 1
-                if y < C - 1 and grid[x][y + 1] == 0:
-                    grid[x][y + 1] = k + 1
+            if grid[x][y] != k:
+                continue
+            if x > 0 and grid[x - 1][y] == 0:
+                grid[x - 1][y] = k + 1
+            if y > 0 and grid[x][y - 1] == 0:
+                grid[x][y - 1] = k + 1
+            if x < R - 1 and grid[x + 1][y] == 0:
+                grid[x + 1][y] = k + 1
+            if y < C - 1 and grid[x][y + 1] == 0:
+                grid[x][y + 1] = k + 1
     return grid
 
 
