@@ -47,8 +47,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
-    a = pos[0]
-    return [x for x in grid[a]]
+    return [x for x in grid[pos[0]]]
 
     """Возвращает все значения для номера строки, указанной в pos
 
@@ -62,8 +61,7 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
 
 
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
-    b = pos[1]
-    return [x[b] for x in grid]
+    return [x[pos[1]] for x in grid]
 
     """Возвращает все значения для номера столбца, указанного в pos
 
@@ -118,20 +116,15 @@ def find_empty_positions(grid: tp.List[tp.List[str]]):
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
+    possibilities = set()
     find_in_row = get_row(grid, pos)
     find_in_col = get_col(grid, pos)
     find_in_block = get_block(grid, pos)
-    a = [(x, y, z) for x in find_in_row for y in find_in_col for z in find_in_block]
-    possibilities = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    fin_pos = []
-    for each in a:
-        for i in each:
-            for hcae in possibilities:
-                if i == hcae:
-                    fin_pos.append(hcae)
-
-    find_possible = list(set(possibilities).difference(fin_pos))
-    return set(find_possible)
+    for possibility in "123456789":
+        if not (possibility in find_in_row or possibility in find_in_col):
+            if not possibility in find_in_block:
+                possibilities.add(possibility)
+    return possibilities
 
     """Вернуть множество возможных значения для указанной позиции
 
@@ -182,18 +175,12 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             pos = (i, j)
             row = set(get_row(solution, pos))
             col = set(get_col(solution, pos))
-            block = set(get_block(solution, pos))
-            for each in row:
-                if each.isdigit():
-                    summa1.append(int(each))
+            block = set(get_block(solution, pos))   
+            [summa1.append(int(each)) for each in row if each.isdigit()]
             a = sum(summa1)
-            for each in col:
-                if each.isdigit():
-                    summa2.append(int(each))
-            b = sum(summa2)
-            for each in block:
-                if each.isdigit():
-                    summa3.append(int(each))
+            [summa2.append(int(each)) for each in col if each.isdigit()]
+            b = sum(summa2)    
+            [summa3.append(int(each)) for each in block if each.isdigit()]
             c = sum(summa3)
             if a != b and b != c:
                 true_list.append(1)
