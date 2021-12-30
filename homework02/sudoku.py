@@ -169,24 +169,15 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     true_list = []
     for i in range(0, 9):
         for j in range(0, 9):
-            summa1 = []
-            summa2 = []
-            summa3 = []
             pos = (i, j)
             row = set(get_row(solution, pos))
             col = set(get_col(solution, pos))
-            block = set(get_block(solution, pos))
-            for each in row:
-                if each.isdigit():
-                    summa1.append(int(each))
+            block = set(get_block(solution, pos))                   
+            summa1 = [int(each) for each in row if each.isdigi()]
             a = sum(summa1)
-            for each in col:
-                if each.isdigit():
-                    summa2.append(int(each))
+            summa2 = [int(each) for each in col if each.isdigi()]
             b = sum(summa2)
-            for each in block:
-                if each.isdigit():
-                    summa3.append(int(each))
+            summa3 = [int(each) for each in block if each.isdigi()]
             c = sum(summa3)
             if a != b and b != c:
                 true_list.append(1)
