@@ -175,11 +175,11 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             pos = (i, j)
             row = set(get_row(solution, pos))
             col = set(get_col(solution, pos))
-            block = set(get_block(solution, pos))   
+            block = set(get_block(solution, pos))
             [summa1.append(int(each)) for each in row if each.isdigit()]
             a = sum(summa1)
             [summa2.append(int(each)) for each in col if each.isdigit()]
-            b = sum(summa2)    
+            b = sum(summa2)
             [summa3.append(int(each)) for each in block if each.isdigit()]
             c = sum(summa3)
             if a != b and b != c:
