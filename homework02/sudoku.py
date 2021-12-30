@@ -25,7 +25,8 @@ def display(grid: tp.List[tp.List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
+                for col in range(9)
             )
         )
         if str(row) in "25":
@@ -115,7 +116,9 @@ def find_empty_positions(grid: tp.List[tp.List[str]]):
     """
 
 
-def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
+def find_possible_values(
+    grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]
+) -> tp.Set[str]:
     possibilities = set()
     find_in_row = get_row(grid, pos)
     find_in_col = get_col(grid, pos)
@@ -172,7 +175,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             pos = (i, j)
             row = set(get_row(solution, pos))
             col = set(get_col(solution, pos))
-            block = set(get_block(solution, pos))                   
+            block = set(get_block(solution, pos))
             summa1 = [int(each) for each in row if each.isdigi()]
             a = sum(summa1)
             summa2 = [int(each) for each in col if each.isdigi()]
@@ -238,3 +241,4 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+
