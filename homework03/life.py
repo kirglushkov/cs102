@@ -9,6 +9,7 @@ Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
 
+
 class GameOfLife:
     def __init__(
         self,
@@ -31,7 +32,10 @@ class GameOfLife:
         if not randomize:
             return [[0 for _ in range(self.cols)] for __ in range(self.rows)]
         else:
-            return [[random.choice([0, 1]) for _ in range(self.cols)] for __ in range(self.rows)]
+            return [
+                [random.choice([0, 1]) for _ in range(self.cols)]
+                for __ in range(self.rows)
+            ]
 
     def get_neighbours(self, cell: Cell) -> Cells:
         nbours = []
@@ -80,13 +84,12 @@ class GameOfLife:
     def is_max_generations_exceeded(self) -> bool:
         """
         Не превысило ли текущее число поколений максимально допустимое.
-        """          
+        """
         if not self.is_max_generations_exceeded:
             if self.is_changing:
                 self.prev_generation = self.curr_generation
                 self.curr_generation = self.get_next_generation()
                 self.generations += 1
-
 
     @property
     def is_changing(self) -> bool:
@@ -94,7 +97,6 @@ class GameOfLife:
         Изменилось ли состояние клеток с предыдущего шага.
         """
         return self.curr_generation != self.prev_generation
- 
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
@@ -112,6 +114,7 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
+
     with open(f"{filename}", "w") as f:
         for _ in self.curr_generation:
             for t in _:

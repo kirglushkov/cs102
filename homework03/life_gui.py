@@ -1,6 +1,7 @@
 import pygame
-from life import GameOfLife
 from pygame.locals import *
+
+from life import GameOfLife
 from ui import UI
 
 
@@ -20,14 +21,21 @@ class GUI(UI):
 
     def draw_lines(self) -> None:
         for j in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, j), (self.width, j))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (0, j), (self.width, j)
+            )
         for i in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (i, 0), (i, self.height))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (i, 0), (i, self.height)
+            )
 
     def draw_grid(self) -> None:
         for y in range(1, self.height, self.cell_size):
             for x in range(1, self.width, self.cell_size):
-                if self.life.curr_generation[y // self.cell_size][x // self.cell_size] == 0:
+                if (
+                    self.life.curr_generation[y // self.cell_size][x // self.cell_size]
+                    == 0
+                ):
                     pygame.draw.rect(
                         self.screen,
                         pygame.Color("white"),
@@ -51,7 +59,11 @@ class GUI(UI):
 
         running = True
         paused = False
-        while running and self.life.is_changing and not self.life.is_max_generations_exceeded:
+        while (
+            running
+            and self.life.is_changing
+            and not self.life.is_max_generations_exceeded
+        ):
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
