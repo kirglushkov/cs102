@@ -26,7 +26,7 @@ class GUI(UI):
     def draw_grid(self) -> None:
         for y in range(1, self.height, self.cell_size):
             for x in range(1, self.width, self.cell_size):
-                if self.life.curr_generation[y // self.cell_size][x // self.cell_size]== 0:
+                if self.life.curr_generation[y // self.cell_size][x // self.cell_size] == 0:
                     pygame.draw.rect(
                         self.screen,
                         pygame.Color("white"),
