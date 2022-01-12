@@ -32,13 +32,9 @@ class GameOfLife:
     def draw_lines(self) -> None:
         """Отрисовать сетку"""
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(
-                self.screen, pygame.Color("black"), (x, 0), (x, self.height)
-            )
+            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(
-                self.screen, pygame.Color("black"), (0, y), (self.width, y)
-            )
+            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y))
 
     def run(self) -> None:
         """Запустить игру"""
@@ -47,19 +43,12 @@ class GameOfLife:
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))
 
-        # Создание списка клеток
-        # PUT YOUR CODE HERE
-
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
             self.draw_lines()
-
-            # Отрисовка списка клеток
-            # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -86,10 +75,7 @@ class GameOfLife:
         if not randomize:
             return [[0 for _ in range(self.cols)] for __ in range(self.rows)]
         else:
-            return [
-                [random.choice([0, 1]) for _ in range(self.cols)]
-                for __ in range(self.rows)
-            ]
+            return [[random.choice([0, 1]) for _ in range(self.cols)] for __ in range(self.rows)]
 
     def draw_grid(self) -> None:
         """
