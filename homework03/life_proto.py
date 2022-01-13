@@ -43,13 +43,14 @@ class GameOfLife:
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))
 
-        running = True
-        while running:
+        
+        while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     running = False
+            self.draw_grid()
             self.draw_lines()
-
+            self.grid = self.get_next_generation()
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -72,10 +73,13 @@ class GameOfLife:
         out : Grid
             Матрица клеток размером `cell_height` х `cell_width`.
         """
-        if not randomize:
-            return [[0 for _ in range(self.cols)] for __ in range(self.rows)]
-        else:
-            return [[random.choice([0, 1]) for _ in range(self.cols)] for __ in range(self.rows)]
+        grid = []
+        for _ in range(self.cell_height):
+            row = []
+            for __ in range(self.cell_width):
+                row.append(random.randint(0, 1) if randomize else 0)
+            grid.append(row)
+        return grid
 
     def draw_grid(self) -> None:
         """
