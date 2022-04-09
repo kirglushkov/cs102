@@ -3,7 +3,7 @@ import math
 import time
 import typing as tp
 
-from vkapi import config, session
+from vkapi import config, session  # type: ignore
 from vkapi.exceptions import APIError
 from vkapi.session import Session
 
@@ -29,25 +29,20 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    start = Session(config.VK_CONFIG["domain"])
+    domain = Session(config.VK_CONFIG["domain"])
     resp = FriendsResponse(0, [0])
-    try:
-        friends = start.get(
-            "friends.get",
-            params={
-                "access_token": config.VK_CONFIG["access_token"],
-                "v": config.VK_CONFIG["version"],
-                "user_id": user_id,
-                "count": count,
-                "offset": offset,
-                "fields": fields,
-            },
-        )
-        resp = FriendsResponse(
-            friends.json()["response"]["count"], friends.json()["response"]["items"]
-        )
-    except:
-        pass
+    friends = domain.get(
+        "friends.get",
+        params={
+            "access_token": config.VK_CONFIG["access_token"],
+            "v": config.VK_CONFIG["version"],
+            "user_id": user_id,
+            "count": count,
+            "offset": offset,
+            "fields": fields,
+        },
+    )
+    resp = FriendsResponse(friends.json()["response"]["count"], friends.json()["response"]["items"])
     return resp
 
 
