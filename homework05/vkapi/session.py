@@ -2,7 +2,7 @@ import typing as tp
 
 import requests
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util.retry import Retry as Retri
 
 
 class Session:
@@ -22,10 +22,25 @@ class Session:
         max_retries: int = 3,
         backoff_factor: float = 0.3,
     ) -> None:
-        pass
+        self.session = requests.Session()
+        self.base_url = base_url
+        self.timeout = timeout
+        self.retry = Retri(
+            total=max_retries,
+            backoff_factor=backoff_factor,
+            allowed_methods=["GET", "POST"],
+            status_forcelist=list(range(400, 666)),
+        )
+        self.adapter = HTTPAdapter(max_retries=self.retry)
+        self.session.mount(base_url, self.adapter)
+
+    def timeout_kwarg(self, kwargs):
+        return kwargs["timeout"] if "timeout" in kwargs else self.timeout
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+        kwargs["timeout"] = self.timeout_kwarg(kwargs)
+        return self.session.get(self.base_url + url, *args, **kwargs)
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+        kwargs["timeout"] = self.timeout_kwarg(kwargs)
+        return self.session.post(self.base_url + url, *args, **kwargs)
