@@ -21,7 +21,7 @@ def ego_network(
     friend = get_mutual(user_id, target_uids=friends)
     for dude in friend:
         for his_friend in dude["common_friends"]:  # type: ignore
-            social_graph.append((dude["id"], his_friend))  # type: ignore
+            social_netgraph.append((dude["id"], his_friend))  # type: ignore
     return social_netgraph
 
 
