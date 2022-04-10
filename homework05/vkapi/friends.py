@@ -105,11 +105,11 @@ def get_mutual(
                     )
             except:
                 pass
-            time.sleep(0.4)
+            time.sleep(0.38)
         return list_of_mutualfriends
 
     try:
-        parms = {
+        parm = {
             "access_token": access_token,
             "v": v,
             "source_uid": source_uid,
@@ -119,7 +119,7 @@ def get_mutual(
             "count": count,
             "offset": offset,
         }
-        mutual_friends = session.get("friends.getMutual", params=parms)
+        mutual_friends = session.get("friends.getMutual", params=parm)
         list_of_mutualfriends.extend(mutual_friends.json()["response"])
 
     except:

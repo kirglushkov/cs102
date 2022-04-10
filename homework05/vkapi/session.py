@@ -2,9 +2,10 @@ import time
 import typing as tp
 
 import requests  # type: ignore
-import vkapi.config as config
 from requests.adapters import HTTPAdapter  # type: ignore
 from requests.packages.urllib3.util.retry import Retry  # type: ignore
+
+import vkapi.config as config
 
 
 class Session:
@@ -41,9 +42,6 @@ class Session:
         self.adapter = HTTPAdapter(max_retries=self.retry_strategy)
         self.session.mount(base_url, self.adapter)
 
-    def kwarging(self, kwargs):
-        kwargs["timeout"] = kwargs["timeout"] if "timeout" in kwargs else self.timeout
-
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
         self.kwarging(kwargs)
         response = self.session.get(self.base_url + "/" + url, *args, **kwargs)
@@ -53,6 +51,12 @@ class Session:
         self.kwarging(kwargs)
         response = self.session.post(self.base_url + "/" + url, *args, **kwargs)
         return response
+
+    def kwarging(self, kwargs):
+        if "timeout" in kwargs:
+            kwargs["timeout"] = kwargs["timeout"]
+        else:
+            kwargs["timeout"] = self.timeout
 
 
 if __name__ == "__main__":

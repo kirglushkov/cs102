@@ -20,11 +20,11 @@ def get_posts_2500(
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
 ) -> tp.Dict[str, tp.Any]:
-    code = f"""let i = 0;
-    let offset = {offset};
-    let response = [];
+    code = f"""var i = 0;
+    var offset = {offset};
+    var response = [];
     while(i < 25) {{
-        i += 1;
+        i = i + 1;
         offset = offset + 100;
         response.push(API.wall.get({{
             "owner_id": "{owner_id}",
