@@ -6,7 +6,7 @@ from string import Template
 import pandas as pd
 from pandas import json_normalize
 
-from vkapi import config
+from vkapi import config, session
 from vkapi.exceptions import APIError
 from vkapi.session import Session
 
@@ -15,7 +15,7 @@ def get_posts_2500(
     owner_id: str = "",
     domain: str = "",
     offset: int = 0,
-    count: int = 10,
+    count: int = 0,
     max_count: int = 2500,
     filter: str = "owner",
     extended: int = 0,
@@ -28,7 +28,7 @@ def get_wall_execute(
     owner_id: str = "",
     domain: str = "",
     offset: int = 0,
-    count: int = 10,
+    count: int = 0,
     max_count: int = 2500,
     filter: str = "owner",
     extended: int = 0,
