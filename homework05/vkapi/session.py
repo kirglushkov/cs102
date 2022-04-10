@@ -1,8 +1,8 @@
 import typing as tp
 
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry as Retri
+import requests  # type: ignore
+from requests.adapters import HTTPAdapter  # type: ignore
+from urllib3.util.retry import Retry as Retri  # type: ignore
 
 
 class Session:
