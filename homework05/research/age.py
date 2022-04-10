@@ -22,4 +22,4 @@ def age_predict(user_id: int) -> tp.Optional[float]:
             ages.append(age)
         except:
             pass
-    return statistics.mean(age) if age else None
+    return statistics.mean(ages) if age else None
