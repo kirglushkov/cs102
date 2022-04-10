@@ -6,16 +6,16 @@ from string import Template
 import pandas as pd
 from pandas import json_normalize
 
-from vkapi import config, session
+from vkapi import config
 from vkapi.exceptions import APIError
-from vkapi.session import Session  # type: ignore
+from vkapi.session import Session
 
 
 def get_posts_2500(
     owner_id: str = "",
     domain: str = "",
     offset: int = 0,
-    count: int = 0,
+    count: int = 10,
     max_count: int = 2500,
     filter: str = "owner",
     extended: int = 0,
@@ -28,7 +28,7 @@ def get_wall_execute(
     owner_id: str = "",
     domain: str = "",
     offset: int = 0,
-    count: int = 0,
+    count: int = 10,
     max_count: int = 2500,
     filter: str = "owner",
     extended: int = 0,
@@ -52,7 +52,7 @@ def get_wall_execute(
     """
     sess = Session(config.VK_CONFIG["domain"])
     user_all_wall_posts = []
-    for k in range(((count - 1) // max_count) + 1):
+    for i in range(((count - 1) // max_count) + 1):
         try:
 
             temp_code = """let posts = []; let i = 0; while (i < $tries) {posts = posts + API.wall.get({"owner_id":$owner_id,"domain":"$domain","offset":$offset + i*100,"count":"$count","filter":"$filter","extended":$extended,"fields":'$fields',"v":$version})['items']; i+=1;} return {'count': posts.length, 'items': posts};"""
@@ -60,10 +60,10 @@ def get_wall_execute(
             temp_obj.substitute(
                 owner_id=owner_id if owner_id else 0,
                 domain=domain,
-                offset=offset + max_count * k,
-                count=count - max_count * k if count - max_count * k < 101 else 100,
-                tries=(count - max_count * k - 1) // 100 + 1
-                if count - max_count * k < max_count + 1
+                offset=offset + max_count * i,
+                count=count - max_count * i if count - max_count * i < 101 else 100,
+                tries=(count - max_count * i - 1) // 100 + 1
+                if count - max_count * i < max_count + 1
                 else max_count // 100,
                 filter=filter,
                 extended=extended,

@@ -2,7 +2,7 @@ import typing as tp
 
 import requests  # type: ignore
 from requests.adapters import HTTPAdapter  # type: ignore
-from urllib3.util.retry import Retry as Retri  # type: ignore
+from urllib3.util.retry import Retry as Ret  # type: ignore
 
 
 class Session:
@@ -22,25 +22,27 @@ class Session:
         max_retries: int = 3,
         backoff_factor: float = 0.3,
     ) -> None:
-        self.session = requests.Session()
         self.base_url = base_url
         self.timeout = timeout
-        self.retry = Retri(
+        self.session = requests.Session()
+        self.retry_strategy = Ret(
             total=max_retries,
             backoff_factor=backoff_factor,
             method_whitelist=["GET", "POST"],
             status_forcelist=list(range(400, 600)),
         )
-        self.adapter = HTTPAdapter(max_retries=self.retry)
+        self.adapter = HTTPAdapter(max_retries=self.retry_strategy)
         self.session.mount(base_url, self.adapter)
 
-    def timeout_kwarg(self, kwargs):
-        return kwargs["timeout"] if "timeout" in kwargs else self.timeout
+    def kwarging(self, kwargs):
+        kwargs["timeout"] = kwargs["timeout"] if "timeout" in kwargs else self.timeout
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        kwargs["timeout"] = self.timeout_kwarg(kwargs)
-        return self.session.get(self.base_url + url, *args, **kwargs)
+        self.kwarging(kwargs)
+        response = self.session.get(self.base_url + "/" + url, *args, **kwargs)
+        return response
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        kwargs["timeout"] = self.timeout_kwarg(kwargs)
-        return self.session.post(self.base_url + url, *args, **kwargs)
+        self.kwarging(kwargs)
+        response = self.session.post(self.base_url + "/" + url, *args, **kwargs)
+        return response

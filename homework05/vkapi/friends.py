@@ -1,10 +1,11 @@
 import dataclasses
+import math
 import time
 import typing as tp
 
-from vkapi import config, session  # type: ignore
-from vkapi.exceptions import APIError  # type: ignore
-from vkapi.session import Session  # type: ignore
+from vkapi import config
+from vkapi.exceptions import APIError
+from vkapi.session import Session
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
@@ -28,20 +29,25 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    domain = Session(config.VK_CONFIG["domain"])
+    start = Session(config.VK_CONFIG["domain"])
     resp = FriendsResponse(0, [0])
-    friends = domain.get(
-        "friends.get",
-        params={
-            "access_token": config.VK_CONFIG["access_token"],
-            "v": config.VK_CONFIG["version"],
-            "user_id": user_id,
-            "count": count,
-            "offset": offset,
-            "fields": fields,
-        },
-    )
-    resp = FriendsResponse(friends.json()["response"]["count"], friends.json()["response"]["items"])
+    try:
+        friends = start.get(
+            "friends.get",
+            params={
+                "access_token": config.VK_CONFIG["access_token"],
+                "v": config.VK_CONFIG["version"],
+                "user_id": user_id,
+                "count": count,
+                "offset": offset,
+                "fields": fields,
+            },
+        )
+        resp = FriendsResponse(
+            friends.json()["response"]["count"], friends.json()["response"]["items"]
+        )
+    except:
+        pass
     return resp
 
 
@@ -58,6 +64,7 @@ def get_mutual(
     order: str = "hints",
     count: tp.Optional[int] = None,
     offset: int = 0,
+    progress=None,
 ) -> tp.Union[tp.List[int], tp.List[MutualFriends]]:
     """
     Получить список идентификаторов общих друзей между парой пользователей.
@@ -70,12 +77,12 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    domain = Session(config.VK_CONFIG["domain"])
+    start = Session(config.VK_CONFIG["domain"])
     all_friends = []
     if target_uids:
         for i in range(((len(target_uids) - 1) // 100) + 1):
             try:
-                mutual_friends = domain.get(
+                mutual_friends = start.get(
                     "friends.getMutual",
                     params={
                         "access_token": config.VK_CONFIG["access_token"],
@@ -101,7 +108,7 @@ def get_mutual(
             time.sleep(0.5)
         return all_friends
     try:
-        mutual_friends = domain.get(
+        mutual_friends = start.get(
             "friends.getMutual",
             params={
                 "access_token": config.VK_CONFIG["access_token"],
