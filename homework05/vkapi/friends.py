@@ -74,45 +74,49 @@ def get_mutual(
     all_friends = []
     if target_uids:
         for i in range(((len(target_uids) - 1) // 100) + 1):
-            mutual_friends = domain.get(
-                "friends.getMutual",
-                params={
-                    "access_token": config.VK_CONFIG["access_token"],
-                    "v": config.VK_CONFIG["version"],
-                    "source_uid": source_uid,
-                    "target_uid": target_uid,
-                    "target_uids": ",".join(list(map(str, target_uids))),
-                    "order": order,
-                    "count": 100,
-                    "offset": i * 100,
-                },
-            )
-            for friend in mutual_friends.json()["response"]:
-                all_friends.append(
-                    MutualFriends(
-                        id=friend["id"],
-                        common_friends=list(map(int, friend["common_friends"])),
-                        common_count=friend["common_count"],
-                    )
+            try:
+                mutual_friends = domain.get(
+                    "friends.getMutual",
+                    params={
+                        "access_token": config.VK_CONFIG["access_token"],
+                        "v": config.VK_CONFIG["version"],
+                        "source_uid": source_uid,
+                        "target_uid": target_uid,
+                        "target_uids": ",".join(list(map(str, target_uids))),
+                        "order": order,
+                        "count": 100,
+                        "offset": i * 100,
+                    },
                 )
-        time.sleep(0.5)
-
-    mutual_friends = domain.get(
-        "friends.getMutual",
-        params={
-            "access_token": config.VK_CONFIG["access_token"],
-            "v": config.VK_CONFIG["version"],
-            "source_uid": source_uid,
-            "target_uid": target_uid,
-            "target_uids": target_uids,
-            "order": order,
-            "count": count,
-            "offset": offset,
-        },
-    )
-
-    all_friends.extend(mutual_friends.json()["response"])
-
+                for friend in mutual_friends.json()["response"]:
+                    all_friends.append(
+                        MutualFriends(
+                            id=friend["id"],
+                            common_friends=list(map(int, friend["common_friends"])),
+                            common_count=friend["common_count"],
+                        )
+                    )
+            except:
+                pass
+            time.sleep(0.5)
+        return all_friends
+    try:
+        mutual_friends = domain.get(
+            "friends.getMutual",
+            params={
+                "access_token": config.VK_CONFIG["access_token"],
+                "v": config.VK_CONFIG["version"],
+                "source_uid": source_uid,
+                "target_uid": target_uid,
+                "target_uids": target_uids,
+                "order": order,
+                "count": count,
+                "offset": offset,
+            },
+        )
+        all_friends.extend(mutual_friends.json()["response"])
+    except:
+        pass
     return all_friends
 
 
