@@ -17,12 +17,12 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    social_graph = []
-    mutuals = get_mutual(user_id, target_uids=friends)
-    for person in mutuals:
-        for his_friend in person["common_friends"]:  # type: ignore
-            social_graph.append((person["id"], his_friend))  # type: ignore
-    return social_graph
+    social_netgraph = []
+    friend = get_mutual(user_id, target_uids=friends)
+    for dude in friend:
+        for his_friend in dude["common_friends"]:  # type: ignore
+            social_graph.append((dude["id"], his_friend))  # type: ignore
+    return social_netgraph
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
