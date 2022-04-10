@@ -28,7 +28,7 @@ class Session:
         self.retry = Retri(
             total=max_retries,
             backoff_factor=backoff_factor,
-            allowed_methods=["GET", "POST"],
+            method_whitelist=["GET", "POST"],
             status_forcelist=list(range(400, 666)),
         )
         self.adapter = HTTPAdapter(max_retries=self.retry)
