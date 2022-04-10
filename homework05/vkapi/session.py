@@ -4,7 +4,6 @@ import typing as tp
 import requests  # type: ignore
 from requests.adapters import HTTPAdapter  # type: ignore
 from requests.packages.urllib3.util.retry import Retry  # type: ignore
-
 import vkapi.config as config
 
 
