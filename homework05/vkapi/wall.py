@@ -8,6 +8,7 @@ from pandas import json_normalize
 
 from vkapi import config, session
 from vkapi.exceptions import APIError
+from vkapi.session import Session  # type: ignore
 
 
 def get_posts_2500(
@@ -49,4 +50,39 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
-    pass
+    sess = Session(config.VK_CONFIG["domain"])
+    all_wall_posts = []
+    for k in range(((count - 1) // max_count) + 1):
+        temp_code = """let posts = []; let i = 0; while (i < $tries) {posts = posts + API.wall.get({"owner_id":$owner_id,"domain":"$domain","offset":$offset + i*100,"count":"$count","filter":"$filter","extended":$extended,"fields":'$fields',"v":$version})['items']; i+=1;} return {'count': posts.length, 'items': posts};"""
+        temp_obj = Template(temp_code)
+        temp_obj.substitute(
+            owner_id=owner_id if owner_id else 0,
+            domain=domain,
+            offset=offset + max_count * k,
+            count=count - max_count * k if count - max_count * k < 101 else 100,
+            tries=(count - max_count * k - 1) // 100 + 1
+            if count - max_count * k < max_count + 1
+            else max_count // 100,
+            filter=filter,
+            extended=extended,
+            fields=fields,
+            version=str(config.VK_CONFIG["version"]),
+        )
+        wall_posts = sess.post(
+            "execute",
+            data={
+                "code": temp_obj,
+                "access_token": config.VK_CONFIG["access_token"],
+                "v": config.VK_CONFIG["version"],
+            },
+        )
+        time.sleep(2)
+
+    for post in wall_posts.json()["response"]["items"]:
+        all_wall_posts.append(post)
+
+    return json_normalize(all_wall_posts)
+
+
+if __name__ == "__main__":
+    posts = get_wall_execute(domain="kronbars", count=5000, max_count=1000)
