@@ -1,7 +1,7 @@
 import time
 import unittest
 
-import httpretty  # type: ignore
+import httpretty
 import responses  # type: ignore
 from requests.exceptions import ConnectionError  # type: ignore
 from requests.exceptions import HTTPError  # type: ignore
