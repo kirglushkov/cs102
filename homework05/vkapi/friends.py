@@ -96,7 +96,7 @@ def get_mutual(
                     )
                 )
         time.sleep(0.5)
-        return all_friends
+
     mutual_friends = domain.get(
         "friends.getMutual",
         params={
@@ -117,6 +117,6 @@ def get_mutual(
 
 
 if __name__ == "__main__":
-    friends = get_friends(user_id=0).items
+    friends = get_friends(user_id=162318084).items
     print(friends)
     print(get_mutual(162318084, target_uids=[280263434, 457232519, 122377811]))
